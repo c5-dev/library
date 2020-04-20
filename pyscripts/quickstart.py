@@ -2,7 +2,6 @@ from __future__ import print_function
 import pickle
 import os.path
 
-from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient import discovery
@@ -23,10 +22,9 @@ def get():
     """Shows basic usage of the Drive v3 API.
     Prints the names and ids of the first 10 files the user has access to.
     """
-    service = build('drive', 'v3', credentials=credentials)
 
     # Call the Drive v3 API
-    results = service.files().list(
+    results = drive_service.files().list(
         pageSize=10, fields="nextPageToken, files(id, name)").execute()
     items = results.get('files', [])
 
@@ -38,12 +36,11 @@ def get():
             print(u'{0} ({1})'.format(item['name'], item['id']))
 
 def create_folder(name):
-    service = build('drive', 'v3', credentials=credentials)
     file_metadata = {
         'name': name,
         'mimeType': 'application/vnd.google-apps.folder'
     }
-    file = service.files().create(body=file_metadata,
+    file = drive_service.files().create(body=file_metadata,
                                         fields='id').execute()
     print ('Folder ID: %s' % file.get('id'))
 

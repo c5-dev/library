@@ -1,7 +1,7 @@
 from quickstart import *
 
 def main():
-    pass
+    get()
 
 if __name__ == "__main__":
     main()
